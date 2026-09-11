@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forge Fitness | Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Outfit",sans-serif;background:#060913;color:#fff;min-height:100vh;}
+button,input,textarea{font-family:inherit;}
+button{cursor:pointer;}
+#login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at top left,#18223c 0%,transparent 35%),radial-gradient(circle at bottom right,#111a30 0%,transparent 35%),#060913;}
+.login-box{width:100%;max-width:430px;background:#0c1120;border:1px solid #202940;border-radius:22px;padding:35px;box-shadow:0 25px 80px rgba(0,0,0,.45);}
+.logo{text-align:center;margin-bottom:30px;}
+.logo h1{font-size:30px;font-weight:900;letter-spacing:2px;}
+.logo h1 span{color:#ff4d4d;}
+.logo p{color:#8993a8;margin-top:7px;font-size:14px;}
+.form-group{margin-bottom:18px;}
+.form-group label{display:block;margin-bottom:8px;color:#cbd3e3;font-size:14px;font-weight:600;}
+input,textarea{width:100%;background:#080c17;border:1px solid #273149;border-radius:12px;color:#fff;padding:13px 14px;outline:none;font-size:15px;}
+input:focus,textarea:focus{border-color:#ff4d4d;}
+textarea{resize:vertical;min-height:90px;}
+.primary-btn{border:none;border-radius:12px;padding:14px 18px;background:#ff4d4d;color:#fff;font-size:15px;font-weight:800;transition:.2s;}
+.primary-btn:hover{background:#ff3333;transform:translateY(-1px);}
+.primary-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.login-btn{width:100%;}
+.error,.success{display:none;margin-top:15px;padding:11px 13px;border-radius:10px;font-size:14px;}
+.error{background:#35151a;border:1px solid #7a2933;color:#ff8f98;}
+.success{background:#12301f;border:1px solid #276b42;color:#7be3a1;}
+#dashboard{display:none;min-height:100vh;}
+.topbar{height:75px;border-bottom:1px solid #202940;background:#090e1a;display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:100;}
+.brand{font-size:22px;font-weight:900;letter-spacing:1px;}
+.brand span{color:#ff4d4d;}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.admin-badge{background:#141b2b;border:1px solid #273149;padding:8px 12px;border-radius:9px;color:#b8c2d5;font-size:13px;}
+.logout-btn{border:1px solid #51252b;background:#211116;color:#ff858e;padding:9px 14px;border-radius:9px;font-weight:700;}
+.logout-btn:hover{background:#32151b;}
+.container{width:100%;max-width:1250px;margin:auto;padding:35px 25px 60px;}
+.welcome{margin-bottom:30px;}
+.welcome h2{font-size:30px;font-weight:800;}
+.welcome p{color:#8792a8;margin-top:7px;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:30px;}
+.stat-card{background:#0c1120;border:1px solid #202940;border-radius:17px;padding:22px;}
+.stat-card p{color:#8490a6;font-size:14px;margin-bottom:10px;}
+.stat-card h3{font-size:30px;font-weight:900;}
+.panel{background:#0c1120;border:1px solid #202940;border-radius:18px;padding:25px;margin-bottom:25px;}
+.panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;}
+.panel-header h3{font-size:21px;font-weight:800;}
+.panel-header p{color:#7f8aa0;font-size:14px;margin-top:4px;}
+.grid-form{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.full{grid-column:1/-1;}
+.form-actions{grid-column:1/-1;display:flex;gap:10px;}
+.secondary-btn{border:1px solid #29334b;background:#12192a;color:#cbd4e5;padding:13px 18px;border-radius:11px;font-weight:700;}
+.secondary-btn:hover{background:#192238;}
+.items-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+.card-item{border:1px solid #222c43;background:#090e1a;border-radius:15px;padding:18px;display:flex;gap:15px;}
+.card-image{width:85px;height:85px;border-radius:13px;object-fit:cover;background:#151c2c;flex-shrink:0;}
+.card-info{min-width:0;flex:1;}
+.card-info h4{font-size:18px;font-weight:800;}
+.card-subtitle{color:#ff6868;font-size:13px;font-weight:700;margin-top:3px;}
+.card-desc{color:#8994a9;font-size:13px;margin-top:9px;line-height:1.5;}
+.card-actions{display:flex;gap:7px;margin-top:13px;}
+.edit-btn,.delete-btn{border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;}
+.edit-btn{border:1px solid #2e4568;background:#101d31;color:#8ebdff;}
+.delete-btn{border:1px solid #56272c;background:#211216;color:#ff8a92;}
+.edit-btn:hover{background:#162843;}
+.delete-btn:hover{background:#32171c;}
+.empty,.loading{grid-column:1/-1;text-align:center;padding:25px;color:#7d879a;}
+@media(max-width:850px){.stats{grid-template-columns:1fr;}.items-grid{grid-template-columns:1fr;}.grid-form{grid-template-columns:1fr;}.full,.form-actions{grid-column:auto;}}
+@media(max-width:600px){.topbar{padding:0 15px;}.brand{font-size:18px;}.admin-badge{display:none;}.container{padding:25px 15px 50px;}.panel{padding:18px;}.welcome h2{font-size:25px;}.card-item{flex-direction:column;}.card-image{width:100%;height:180px;}}
+</style>
+</head>
+<body>
+<section id="login-page">
+  <div class="login-box">
+    <div class="logo">
+      <h1>FORGE <span>FITNESS</span></h1>
+      <p>Admin Dashboard</p>
+    </div>
+    <form id="login-form">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter username" autocomplete="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter password" autocomplete="current-password" required>
+      </div>
+      <button type="submit" id="login-btn" class="primary-btn login-btn">Login</button>
+      <div id="error-msg" class="error"></div>
+    </form>
+  </div>
+</section>
+
+<section id="dashboard">
+  <header class="topbar">
+    <div class="brand">FORGE <span>FITNESS</span></div>
+    <div class="topbar-right">
+      <div class="admin-badge">Admin Panel</div>
+      <button type="button" id="logout-btn" class="logout-btn">Logout</button>
+    </div>
+  </header>
+  <main class="container">
+    <div class="welcome">
+      <h2>Dashboard</h2>
+      <p>Manage your Forge Fitness Club website content.</p>
+    </div>
+    <div class="stats">
+      <div class="stat-card"><p>Total Trainers</p><h3 id="trainer-count">0</h3></div>
+      <div class="stat-card"><p>Total Programs</p><h3 id="program-count">0</h3></div>
+      <div class="stat-card"><p>Website Status</p><h3>Online</h3></div>
+    </div>
+
+    <!-- SITE METADATA PANEL -->
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <h3>Website Information</h3>
+          <p>Update club name, contact details, and tagline.</p>
+        </div>
+      </div>
+      <form id="site-form" class="grid-form">
+        <div class="form-group">
+          <label for="site-name">Club Name</label>
+          <input type="text" id="site-name" required>
+        </div>
+        <div class="form-group">
+          <label for="site-tagline">Tagline</label>
+          <input type="text" id="site-tagline" required>
+        </div>
+        <div class="form-group">
+          <label for="site-phone">Phone</label>
+          <input type="text" id="site-phone" required>
+        </div>
+        <div class="form-group">
+          <label for="site-email">Email</label>
+          <input type="email" id="site-email" required>
+        </div>
+        <div class="form-group full">
+          <label for="site-address">Address</label>
+          <input type="text" id="site-address" required>
+        </div>
+        <div class="form-group full">
+          <label for="site-description">Description</label>
+          <textarea id="site-description" required></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="primary-btn" id="save-site-btn">Save Changes</button>
+        </div>
+        <div id="site-message" class="success full"></div>
+      </form>
+    </div>
+
+    <!-- PRICING PLANS PANEL -->
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <h3 id="pricing-form-title">Add Pricing Plan</h3>
+          <p>Add or edit membership pricing plans.</p>
+        </div>
+      </div>
+      <form id="pricing-form" class="grid-form">
+        <input type="hidden" id="pricing-id">
+        <div class="form-group">
+          <label for="pricing-title">Plan Title</label>
+          <input type="text" id="pricing-title" placeholder="e.g. Gold Membership" required>
+        </div>
+        <div class="form-group">
+          <label for="pricing-price">Price</label>
+          <input type="text" id="pricing-price" placeholder="e.g. 10,000 PKR / mo" required>
+        </div>
+        <div class="form-group full">
+          <label for="pricing-features">Features (comma separated)</label>
+          <textarea id="pricing-features" placeholder="Full gym access, 24/7 entry, Locker facility" required></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="primary-btn" id="save-pricing-btn">Add Pricing Plan</button>
+          <button type="button" class="secondary-btn" id="cancel-pricing-btn" style="display:none;">Cancel</button>
+        </div>
+        <div id="pricing-message" class="success full"></div>
+      </form>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <h3>Pricing Plans List</h3>
+          <p>Manage active subscription plans.</p>
+        </div>
+      </div>
+      <div id="pricing-list" class="items-grid">
+        <div class="loading">Loading pricing plans...</div>
+      </div>
+    </div>
+
+    <!-- TRAINER PANEL -->
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <h3 id="trainer-form-title">Add Trainer</h3>
+          <p>Add or edit a trainer profile.</p>
+        </div>
+      </div>
+      <form id="trainer-form" class="grid-form">
+        <input type="hidden" id="trainer-id">
+        <div class="form-group">
+          <label for="trainer-name">Trainer Name</label>
+          <input type="text" id="trainer-name" placeholder="e.g. John Smith" required>
+        </div>
+        <div class="form-group">
+          <label for="trainer-role">Trainer Role</label>
+          <input type="text" id="trainer-role" placeholder="e.g. Head Coach" required>
+        </div>
+        <div class="form-group full">
+          <label for="trainer-image">Image URL</label>
+          <input type="url" id="trainer-image" placeholder="https://example.com/trainer.jpg">
+        </div>
+        <div class="form-group full">
+          <label for="trainer-bio">Bio</label>
+          <textarea id="trainer-bio" placeholder="Write trainer bio..."></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="primary-btn" id="save-trainer-btn">Add Trainer</button>
+          <button type="button" class="secondary-btn" id="cancel-trainer-btn" style="display:none;">Cancel</button>
+        </div>
+        <div id="trainer-message" class="success full"></div>
+      </form>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <h3>Trainers List</h3>
+          <p>Manage active trainers.</p>
+        </div>
+      </div>
+      <div id="trainer-list" class="items-grid">
+        <div class="loading">Loading trainers...</div>
+      </div>
+    </div>
+
+    <!-- PROGRAMS PANEL -->
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <h3 id="program-form-title">Edit Program</h3>
+          <p>Modify fitness program descriptions.</p>
+        </div>
+      </div>
+      <form id="program-form" class="grid-form">
+        <input type="hidden" id="program-id">
+        <div class="form-group">
+          <label for="program-name">Program Name</label>
+          <input type="text" id="program-name" required>
+        </div>
+        <div class="form-group full">
+          <label for="program-desc">Description</label>
+          <textarea id="program-desc" required></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="primary-btn" id="save-program-btn">Update Program</button>
+          <button type="button" class="secondary-btn" id="cancel-program-btn" style="display:none;">Cancel</button>
+        </div>
+        <div id="program-message" class="success full"></div>
+      </form>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div>
+          <h3>Programs List</h3>
+          <p>Manage existing fitness courses.</p>
+        </div>
+      </div>
+      <div id="program-list" class="items-grid">
+        <div class="loading">Loading programs...</div>
+      </div>
+    </div>
+  </main>
+</section><script>
+const loginPage = document.getElementById("login-page");
+const dashboard = document.getElementById("dashboard");
+const loginForm = document.getElementById("login-form");
+const loginBtn = document.getElementById("login-btn");
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
+const errorMsg = document.getElementById("error-msg");
+const logoutBtn = document.getElementById("logout-btn");
+
+// Site Form Elements
+const siteForm = document.getElementById("site-form");
+const siteName = document.getElementById("site-name");
+const siteTagline = document.getElementById("site-tagline");
+const sitePhone = document.getElementById("site-phone");
+const siteEmail = document.getElementById("site-email");
+const siteAddress = document.getElementById("site-address");
+const siteDescription = document.getElementById("site-description");
+const saveSiteBtn = document.getElementById("save-site-btn");
+const siteMessage = document.getElementById("site-message");
+
+// Pricing Elements
+const pricingForm = document.getElementById("pricing-form");
+const pricingList = document.getElementById("pricing-list");
+const pricingId = document.getElementById("pricing-id");
+const pricingTitle = document.getElementById("pricing-title");
+const pricingPrice = document.getElementById("pricing-price");
+const pricingFeatures = document.getElementById("pricing-features");
+const pricingFormTitle = document.getElementById("pricing-form-title");
+const savePricingBtn = document.getElementById("save-pricing-btn");
+const cancelPricingBtn = document.getElementById("cancel-pricing-btn");
+const pricingMessage = document.getElementById("pricing-message");
+
+// Trainer Elements
+const trainerForm = document.getElementById("trainer-form");
+const trainerList = document.getElementById("trainer-list");
+const trainerCount = document.getElementById("trainer-count");
+const trainerId = document.getElementById("trainer-id");
+const trainerName = document.getElementById("trainer-name");
+const trainerRole = document.getElementById("trainer-role");
+const trainerImage = document.getElementById("trainer-image");
+const trainerBio = document.getElementById("trainer-bio");
+const trainerFormTitle = document.getElementById("trainer-form-title");
+const saveTrainerBtn = document.getElementById("save-trainer-btn");
+const cancelTrainerBtn = document.getElementById("cancel-trainer-btn");
+const trainerMessage = document.getElementById("trainer-message");
+
+// Program Elements
+const programForm = document.getElementById("program-form");
+const programList = document.getElementById("program-list");
+const programCount = document.getElementById("program-count");
+const programId = document.getElementById("program-id");
+const programName = document.getElementById("program-name");
+const programDesc = document.getElementById("program-desc");
+const programFormTitle = document.getElementById("program-form-title");
+const saveProgramBtn = document.getElementById("save-program-btn");
+const cancelProgramBtn = document.getElementById("cancel-program-btn");
+const programMessage = document.getElementById("program-message");
+
+let trainers = [];
+let programs = [];
+let pricingPlans = [];
+
+function showError(msg){
+  errorMsg.textContent = msg;
+  errorMsg.style.display = "block";
+}
+function hideError(){
+  errorMsg.textContent = "";
+  errorMsg.style.display = "none";
+}
+function showMsg(el, text){
+  el.textContent = text;
+  el.style.display = "block";
+  setTimeout(() => { el.style.display = "none"; }, 3000);
+}
+function showDashboard(){
+  loginPage.style.display = "none";
+  dashboard.style.display = "block";
+  loadData();
+}
+function showLogin(){
+  dashboard.style.display = "none";
+  loginPage.style.display = "flex";
+}
+
+loginForm.addEventListener("submit", async function(e){
+  e.preventDefault();
+  hideError();
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value;
+  if(!username || !password){
+    showError("Please enter username and password.");
+    return;
+  }
+  loginBtn.disabled = true;
+  loginBtn.textContent = "Logging in...";
+  try{
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ username, password })
+    });
+    const result = await res.json();
+    if(!res.ok) throw new Error(result.message || "Login failed.");
+    usernameInput.value = "";
+    passwordInput.value = "";
+    showDashboard();
+  }catch(err){
+    showError(err.message || "Unable to login.");
+  }finally{
+    loginBtn.disabled = false;
+    loginBtn.textContent = "Login";
+  }
+});
+
+logoutBtn.addEventListener("click", async function(){
+  try{
+    await fetch("/api/logout", { method: "POST", credentials: "include" });
+  }finally{
+    showLogin();
+  }
+});
+
+async function loadData(){
+  try{
+    const res = await fetch("/api/data", { method: "GET", credentials: "include" });
+    if(res.status === 401){ showLogin(); return; }
+    if(!res.ok) throw new Error("Could not load data.");
+    const data = await res.json();
+    
+    // Populate Site Info
+    if(data.site){
+      siteName.value = data.site.name || "";
+      siteTagline.value = data.site.tagline || "";
+      sitePhone.value = data.site.phone || "";
+      siteEmail.value = data.site.email || "";
+      siteAddress.value = data.site.address || "";
+      siteDescription.value = data.site.description || "";
+    }
+
+    trainers = Array.isArray(data.trainers) ? data.trainers : [];
+    programs = Array.isArray(data.programs) ? data.programs : [];
+    pricingPlans = Array.isArray(data.pricing) ? data.pricing : [];
+    
+    renderTrainers();
+    renderPrograms();
+    renderPricing();
+  }catch(err){
+    console.error("LOAD ERROR:", err);
+  }
+}
+
+// Site Form Submission
+siteForm.addEventListener("submit", async function(e){
+  e.preventDefault();
+  saveSiteBtn.disabled = true;
+  saveSiteBtn.textContent = "Saving...";
+  try{
+    const payload = {
+      name: siteName.value.trim(),
+      tagline: siteTagline.value.trim(),
+      phone: sitePhone.value.trim(),
+      email: siteEmail.value.trim(),
+      address: siteAddress.value.trim(),
+      description: siteDescription.value.trim()
+    };
+    const res = await fetch("/api/site", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(payload)
+    });
+    const result = await res.json();
+    if(!res.ok) throw new Error(result.message || "Failed to update site info.");
+    showMsg(siteMessage, "Website info updated successfully!");
+  }catch(err){
+    alert(err.message);
+  }finally{
+    saveSiteBtn.disabled = false;
+    saveSiteBtn.textContent = "Save Changes";
+  }
+});
+
+// Render Pricing Plans
+function renderPricing(){
+  if(pricingPlans.length === 0){
+    pricingList.innerHTML = `<div class="empty">No pricing plans found.</div>`;
+    return;
+  }
+  pricingList.innerHTML = "";
+  pricingPlans.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "card-item";
+    card.innerHTML = `
+      <div class="card-info" style="width:100%;">
+        <h4>${p.title}</h4>
+        <div class="card-subtitle">${p.price}</div>
+        <div class="card-desc"><b>Features:</b> ${Array.isArray(p.features) ? p.features.join(', ') : p.features}</div>
+        <div class="card-actions">
+          <button type="button" class="edit-btn" onclick="editPricing('${p.id}')">Edit</button>
+          <button type="button" class="delete-btn" onclick="deletePricing('${p.id}')">Delete</button>
+        </div>
+      </div>
+    `;
+    pricingList.appendChild(card);
+  });
+}
+
+window.editPricing = function(id){
+  const p = pricingPlans.find(item => String(item.id) === String(id));
+  if(!p) return;
+  pricingId.value = p.id;
+  pricingTitle.value = p.title;
+  pricingPrice.value = p.price;
+  pricingFeatures.value = Array.isArray(p.features) ? p.features.join(', ') : p.features;
+  pricingFormTitle.textContent = "Edit Pricing Plan";
+  savePricingBtn.textContent = "Update Pricing Plan";
+  cancelPricingBtn.style.display = "inline-block";
+  pricingForm.scrollIntoView({ behavior: "smooth" });
+};
+
+cancelPricingBtn.addEventListener("click", () => {
+  pricingId.value = "";
+  pricingForm.reset();
+  pricingFormTitle.textContent = "Add Pricing Plan";
+  savePricingBtn.textContent = "Add Pricing Plan";
+  cancelPricingBtn.style.display = "none";
+});
+
+pricingForm.addEventListener("submit", async function(e){
+  e.preventDefault();
+  const id = pricingId.value.trim();
+  const rawFeatures = pricingFeatures.value.trim();
+  const features = rawFeatures.split(',').map(f => f.trim()).filter(f => f.length > 0);
+  
+  const payload = {
+    title: pricingTitle.value.trim(),
+    price: pricingPrice.value.trim(),
+    features: features
+  };
+  
+  savePricingBtn.disabled = true;
+  savePricingBtn.textContent = id ? "Updating..." : "Adding...";
+  try{
+    const url = id ? `/api/pricing/${id}` : "/api/pricing";
+    const method = id ? "PUT" : "POST";
+    const res = await fetch(url, {
+      method: method,
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(payload)
+    });
+    const result = await res.json();
+    if(!res.ok) throw new Error(result.message || "Operation failed.");
+    cancelPricingBtn.click();
+    loadData();
+    showMsg(pricingMessage, id ? "Pricing plan updated successfully!" : "Pricing plan added successfully!");
+  }catch(err){
+    alert(err.message);
+  }finally{
+    savePricingBtn.disabled = false;
+    savePricingBtn.textContent = id ? "Update Pricing Plan" : "Add Pricing Plan";
+  }
+});
+
+async function deletePricing(id){
+  if(!confirm("Are you sure you want to delete this pricing plan?")) return;
+  try{
+    const res = await fetch(`/api/pricing/${id}`, { method: "DELETE", credentials: "include" });
+    const result = await res.json();
+    if(!res.ok) throw new Error(result.message || "Delete failed.");
+    loadData();
+    showMsg(pricingMessage, "Pricing plan deleted successfully!");
+  }catch(err){
+    alert(err.message);
+  }
+}
+
+// Render Trainers
+function renderTrainers(){
+  trainerCount.textContent = trainers.length;
+  if(trainers.length === 0){
+    trainerList.innerHTML = `<div class="empty">No trainers found.</div>`;
+    return;
+  }
+  trainerList.innerHTML = "";
+  trainers.forEach(t => {
+    const card = document.createElement("div");
+    card.className = "card-item";
+    card.innerHTML = `
+      <img class="card-image" src="${t.image || 'https://via.placeholder.com/300'}" alt="${t.name}">
+      <div class="card-info">
+        <h4>${t.name}</h4>
+        <div class="card-subtitle">${t.role}</div>
+        <div class="card-desc">${t.bio || 'No bio.'}</div>
+        <div class="card-actions">
+          <button type="button" class="edit-btn" onclick="editTrainer('${t.id}')">Edit</button>
+          <button type="button" class="delete-btn" onclick="deleteTrainer('${t.id}')">Delete</button>
+        </div>
+      </div>
+    `;
+    trainerList.appendChild(card);
+  });
+}
+
+window.editTrainer = function(id){
+  const t = trainers.find(item => String(item.id) === String(id));
+  if(!t) return;
+  trainerId.value = t.id;
+  trainerName.value = t.name;
+  trainerRole.value = t.role;
+  trainerImage.value = t.image || "";
+  trainerBio.value = t.bio || "";
+  trainerFormTitle.textContent = "Edit Trainer";
+  saveTrainerBtn.textContent = "Update Trainer";
+  cancelTrainerBtn.style.display = "inline-block";
+  trainerForm.scrollIntoView({ behavior: "smooth" });
+};
+
+cancelTrainerBtn.addEventListener("click", () => {
+  trainerId.value = "";
+  trainerForm.reset();
+  trainerFormTitle.textContent = "Add Trainer";
+  saveTrainerBtn.textContent = "Add Trainer";
+  cancelTrainerBtn.style.display = "none";
+});
+
+trainerForm.addEventListener("submit", async function(e){
+  e.preventDefault();
+  const id = trainerId.value.trim();
+  const payload = {
+    name: trainerName.value.trim(),
+    role: trainerRole.value.trim(),
+    image: trainerImage.value.trim(),
+    bio: trainerBio.value.trim()
+  };
+  saveTrainerBtn.disabled = true;
+  saveTrainerBtn.textContent = id ? "Updating..." : "Adding...";
+  try{
+    const url = id ? `/api/trainers/${id}` : "/api/trainers";
+    const method = id ? "PUT" : "POST";
+    const res = await fetch(url, {
+      method: method,
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(payload)
+    });
+    const result = await res.json();
+    if(!res.ok) throw new Error(result.message || "Operation failed.");
+    cancelTrainerBtn.click();
+    loadData();
+    showMsg(trainerMessage, id ? "Trainer updated successfully!" : "Trainer added successfully!");
+  }catch(err){
+    alert(err.message);
+  }finally{
+    saveTrainerBtn.disabled = false;
+    saveTrainerBtn.textContent = id ? "Update Trainer" : "Add Trainer";
+  }
+});
+
+async function deleteTrainer(id){
+  if(!confirm("Are you sure you want to delete this trainer?")) return;
+  try{
+    const res = await fetch(`/api/trainers/${id}`, { method: "DELETE", credentials: "include" });
+    const result = await res.json();
+    if(!res.ok) throw new Error(result.message || "Delete failed.");
+    loadData();
+    showMsg(trainerMessage, "Trainer deleted successfully!");
+  }catch(err){
+    alert(err.message);
+  }
+}
+
+// Render Programs
+function renderPrograms(){
+  programCount.textContent = programs.length;
+  if(programs.length === 0){
+    programList.innerHTML = `<div class="empty">No programs found.</div>`;
+    return;
+  }
+  programList.innerHTML = "";
+  programs.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "card-item";
+    card.innerHTML = `
+      <div class="card-info" style="width:100%;">
+        <h4>${p.name}</h4>
+        <div class="card-desc">${p.description || 'No description.'}</div>
+        <div class="card-actions">
+          <button type="button" class="edit-btn" onclick="editProgram('${p.id}')">Edit</button>
+        </div>
+      </div>
+    `;
+    programList.appendChild(card);
+  });
+}
+
+window.editProgram = function(id){
+  const p = programs.find(item => String(item.id) === String(id));
+  if(!p) return;
+  programId.value = p.id;
+  programName.value = p.name;
+  programDesc.value = p.description || "";
+  programFormTitle.textContent = "Edit Program";
+  saveProgramBtn.textContent = "Update Program";
+  cancelProgramBtn.style.display = "inline-block";
+  programForm.scrollIntoView({ behavior: "smooth" });
+};
+
+cancelProgramBtn.addEventListener("click", () => {
+  programId.value = "";
+  programForm.reset();
+  programFormTitle.textContent = "Edit Program";
+  saveProgramBtn.textContent = "Update Program";
+  cancelProgramBtn.style.display = "none";
+});
+
+programForm.addEventListener("submit", async function(e){
+  e.preventDefault();
+  const id = programId.value.trim();
+  if(!id) return;
+  const payload = {
+    name: programName.value.trim(),
+    description: programDesc.value.trim()
+  };
+  saveProgramBtn.disabled = true;
+  saveProgramBtn.textContent = "Updating...";
+  try{
+    const res = await fetch(`/api/programs/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(payload)
+    });
+    const result = await res.json();
+    if(!res.ok) throw new Error(result.message || "Failed to update program.");
+    cancelProgramBtn.click();
+    loadData();
+    showMsg(programMessage, "Program updated successfully!");
+  }catch(err){
+    alert(err.message);
+  }finally{
+    saveProgramBtn.disabled = false;
+    saveProgramBtn.textContent = "Update Program";
+  }
+});
+
+// Initial Auth Check
+async function checkAuth(){
+  try{
+    const res = await fetch("/api/auth", { method: "GET", credentials: "include" });
+    const data = await res.json();
+    if(data.authenticated === true){ showDashboard(); } else { showLogin(); }
+  }catch(err){
+    showLogin();
+  }
+}
+
+checkAuth();
+</script>
+</body>
+</html>

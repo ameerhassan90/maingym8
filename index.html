@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FORGE FITNESS CLUB</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: #060913; color: #fff; font-family: "Outfit", sans-serif; line-height: 1.6; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .container { width: min(1180px, 92%); margin: auto; }
+    nav { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background: rgba(6, 9, 19, 0.92); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .nav-inner { min-height: 78px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-size: 25px; font-weight: 900; letter-spacing: 1px; }
+    .logo span { color: #ff4d00; }
+    .nav-links { display: flex; align-items: center; gap: 30px; }
+    .nav-links a { font-size: 15px; font-weight: 600; color: #d9dce5; transition: 0.25s; }
+    .nav-links a:hover { color: #ff5a00; }
+    .admin-link { padding: 10px 17px; border: 1px solid #ff4d00; border-radius: 8px; color: #fff !important; }
+    .admin-link:hover { background: #ff4d00; }
+    .menu-btn { display: none; border: 0; background: none; color: white; font-size: 28px; cursor: pointer; }
+    .hero { min-height: 100vh; display: flex; align-items: center; position: relative; background: linear-gradient(90deg, rgba(4,7,15,.96) 0%, rgba(4,7,15,.82) 45%, rgba(4,7,15,.35) 100%), url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=90&w=1800") center/cover no-repeat; }
+    .hero-content { max-width: 720px; padding-top: 80px; }
+    .hero-tag { display: inline-block; color: #ff5a00; font-size: 14px; font-weight: 800; letter-spacing: 3px; margin-bottom: 18px; }
+    .hero h1 { font-size: clamp(48px, 8vw, 92px); line-height: .95; font-weight: 900; letter-spacing: -3px; margin-bottom: 25px; }
+    .hero h1 span { color: #ff4d00; }
+    .hero p { max-width: 650px; color: #d2d5df; font-size: 18px; margin-bottom: 32px; }
+    .buttons { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 14px 23px; border-radius: 8px; font-weight: 800; transition: .25s; }
+    .btn-primary { background: #ff4d00; color: white; }
+    .btn-primary:hover { background: #ff6500; transform: translateY(-2px); }
+    .btn-secondary { border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.04); }
+    .btn-secondary:hover { background: rgba(255,255,255,.1); }
+    .stats { border-top: 1px solid rgba(255,255,255,.08); border-bottom: 1px solid rgba(255,255,255,.08); background: #0a0e18; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+    .stat { padding: 28px 15px; text-align: center; border-right: 1px solid rgba(255,255,255,.08); }
+    .stat:last-child { border-right: 0; }
+    .stat strong { display: block; font-size: 30px; font-weight: 900; color: #ff4d00; }
+    .stat span { color: #aeb4c2; font-size: 14px; }
+    .section { padding: 100px 0; }
+    .section-heading { max-width: 700px; margin-bottom: 50px; }
+    .eyebrow { color: #ff4d00; font-size: 13px; font-weight: 900; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 12px; }
+    .section-heading h2 { font-size: clamp(35px, 5vw, 58px); line-height: 1; margin-bottom: 18px; }
+    .section-heading p { color: #aeb4c2; font-size: 16px; }
+    #trainers { scroll-margin-top: 90px; background: #080c15; }
+    .trainer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
+    .trainer-card { background: #101521; border: 1px solid rgba(255,255,255,.08); border-radius: 15px; overflow: hidden; transition: .3s; }
+    .trainer-card:hover { transform: translateY(-6px); border-color: rgba(255,77,0,.5); }
+    .trainer-image { width: 100%; height: 390px; object-fit: cover; }
+    .trainer-info { padding: 25px; }
+    .trainer-info h3 { font-size: 25px; margin-bottom: 4px; }
+    .trainer-role { color: #ff4d00; font-weight: 700; font-size: 14px; margin-bottom: 13px; }
+    .trainer-bio { color: #aeb4c2; font-size: 15px; }
+    .loading { color: #aeb4c2; padding: 30px; background: #101521; border-radius: 12px; }
+    #why-forge { scroll-margin-top: 90px; }
+    .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .why-card { padding: 30px; background: #101521; border: 1px solid rgba(255,255,255,.08); border-radius: 14px; }
+    .why-number { font-size: 14px; color: #ff4d00; font-weight: 900; margin-bottom: 18px; }
+    .why-card h3 { font-size: 23px; margin-bottom: 10px; }
+    .why-card p { color: #aeb4c2; font-size: 15px; }
+    .program-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .program-card { padding: 30px; background: #101521; border: 1px solid rgba(255,255,255,.08); border-radius: 14px; }
+    .program-card h3 { font-size: 23px; margin-bottom: 12px; }
+    .program-card p { color: #aeb4c2; font-size: 15px; }
+    .pricing-section { background: #080c15; }
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .price-card { padding: 32px; background: #101521; border: 1px solid rgba(255,255,255,.08); border-radius: 15px; }
+    .price-card.featured { border-color: #ff4d00; transform: translateY(-7px); }
+    .price-card h3 { font-size: 23px; margin-bottom: 15px; }
+    .price { font-size: 32px; font-weight: 900; color: #ff4d00; margin-bottom: 22px; }
+    .features { list-style: none; }
+    .features li { color: #c4c8d1; margin: 10px 0; padding-left: 20px; position: relative; font-size: 14px; }
+    .features li::before { content: "✓"; color: #ff4d00; position: absolute; left: 0; font-weight: 900; }
+    #contact { scroll-margin-top: 90px; }
+    .contact-box { background: linear-gradient(135deg, rgba(255,77,0,.12), rgba(255,255,255,.02)); border: 1px solid rgba(255,255,255,.08); border-radius: 18px; padding: 45px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .contact-box h2 { font-size: 42px; line-height: 1; margin-bottom: 15px; }
+    .contact-box p { color: #aeb4c2; }
+    .contact-details { display: flex; flex-direction: column; gap: 18px; justify-content: center; }
+    .contact-item span { display: block; color: #ff4d00; font-size: 12px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+    .contact-item strong { font-size: 17px; }
+    footer { padding: 30px 0; border-top: 1px solid rgba(255,255,255,.08); color: #777e8d; font-size: 14px; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    @media (max-width: 850px) {
+      .menu-btn { display: block; }
+      .nav-links { display: none; position: absolute; top: 78px; left: 0; width: 100%; padding: 20px; flex-direction: column; align-items: flex-start; background: #080c15; border-bottom: 1px solid rgba(255,255,255,.08); }
+      .nav-links.active { display: flex; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat:nth-child(2) { border-right: 0; }
+      .trainer-grid, .program-grid, .pricing-grid, .why-grid, .contact-box { grid-template-columns: 1fr; }
+      .price-card.featured { transform: none; }
+      .trainer-image { height: 350px; }
+    }
+    @media (max-width: 550px) {
+      .hero h1 { letter-spacing: -2px; }
+      .hero p { font-size: 16px; }
+      .section { padding: 75px 0; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .stat { padding: 22px 8px; }
+      .stat strong { font-size: 25px; }
+      .contact-box { padding: 28px; }
+      .contact-box h2 { font-size: 34px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="container nav-inner">
+      <a href="#home" class="logo">FORGE <span>FITNESS</span></a>
+      <button class="menu-btn" id="menu-btn">☰</button>
+      <div class="nav-links" id="nav-links">
+        <a href="#home">Home</a>
+        <a href="#trainers">Trainers</a>
+        <a href="#why-forge">Why Forge</a>
+        <a href="#programs">Programs</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+        <a href="/admin" class="admin-link">Admin Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="home">
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-tag">FORGE YOURSELF</div>
+          <h1>TRAIN HARD.<br>STAY <span>STRONG.</span></h1>
+          <p id="hero-description">Professional trainers, modern equipment and personalized fitness guidance designed to help you become stronger every day.</p>
+          <div class="buttons">
+            <a href="#trainers" class="btn btn-primary">Meet Our Trainers</a>
+            <a href="#why-forge" class="btn btn-secondary">Why Forge?</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div class="container stats-grid">
+        <div class="stat"><strong id="trainer-stat">—</strong><span>Professional Trainers</span></div>
+        <div class="stat"><strong>24/7</strong><span>Access Available</span></div>
+        <div class="stat"><strong>100%</strong><span>Commitment</span></div>
+        <div class="stat"><strong>1</strong><span>Strong Community</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="trainers">
+      <div class="container">
+        <div class="section-heading">
+          <div class="eyebrow">OUR TEAM</div>
+          <h2>Meet The Trainers</h2>
+          <p>Experienced coaches who are here to help you train smarter, build strength and stay consistent.</p>
+        </div>
+        <div class="trainer-grid" id="trainer-grid">
+          <div class="loading">Loading trainers...</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="why-forge">
+      <div class="container">
+        <div class="section-heading">
+          <div class="eyebrow">WHY FORGE</div>
+          <h2>Built For People Who Take Training Seriously.</h2>
+          <p>No shortcuts. No excuses. Just quality training, proper guidance and an environment built around progress.</p>
+        </div>
+        <div class="why-grid">
+          <div class="why-card"><div class="why-number">01</div><h3>Modern Equipment</h3><p>Train with quality equipment designed for strength, conditioning and performance.</p></div>
+          <div class="why-card"><div class="why-number">02</div><h3>Expert Coaching</h3><p>Get guidance from experienced trainers who understand technique, progression and consistency.</p></div>
+          <div class="why-card"><div class="why-number">03</div><h3>Real Community</h3><p>Train around people who are serious about improving themselves every session.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="programs">
+      <div class="container">
+        <div class="section-heading">
+          <div class="eyebrow">PROGRAMS</div>
+          <h2>Train With Purpose.</h2>
+          <p>Choose the training approach that matches your goals.</p>
+        </div>
+        <div class="program-grid" id="program-grid">
+          <div class="loading">Loading programs...</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section pricing-section" id="pricing">
+      <div class="container">
+        <div class="section-heading">
+          <div class="eyebrow">MEMBERSHIP</div>
+          <h2>Choose Your Level.</h2>
+          <p>Straightforward memberships for different training needs.</p>
+        </div>
+        <div class="pricing-grid" id="pricing-grid">
+          <div class="loading">Loading membership plans...</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container">
+        <div class="contact-box">
+          <div>
+            <div class="eyebrow">GET STARTED</div>
+            <h2>Ready To Forge Yourself?</h2>
+            <p>Come train with us and start building a stronger version of yourself.</p>
+          </div>
+          <div class="contact-details">
+            <div class="contact-item"><span>Email</span><strong id="contact-email">info@forgefitnessclub.com</strong></div>
+            <div class="contact-item"><span>Phone</span><strong id="contact-phone">+92 300 0000000</strong></div>
+            <div class="contact-item"><span>Location</span><strong id="contact-address">Lahore, Pakistan</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>© <span id="year"></span> FORGE FITNESS CLUB</div>
+      <div>Train Hard. Stay Strong.</div>
+    </div>
+  </footer><script>
+    const menuBtn = document.getElementById("menu-btn");
+    const navLinks = document.getElementById("nav-links");
+
+    menuBtn.addEventListener("click", () => {
+      navLinks.classList.toggle("active");
+    });
+
+    document.querySelectorAll(".nav-links a").forEach(link => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("active");
+      });
+    });
+
+    async function loadWebsiteData() {
+      try {
+        const response = await fetch("/api/data");
+        if (!response.ok) {
+          throw new Error("Failed to load website data");
+        }
+        const data = await response.json();
+
+        if (data.site) {
+          document.title = data.site.name || "FORGE FITNESS CLUB";
+          const description = document.getElementById("hero-description");
+          if (description && data.site.description) {
+            description.textContent = data.site.description;
+          }
+          const email = document.getElementById("contact-email");
+          if (email && data.site.email) {
+            email.textContent = data.site.email;
+          }
+          const phone = document.getElementById("contact-phone");
+          if (phone && data.site.phone) {
+            phone.textContent = data.site.phone;
+          }
+          const address = document.getElementById("contact-address");
+          if (address && data.site.address) {
+            address.textContent = data.site.address;
+          }
+        }
+
+        const trainerGrid = document.getElementById("trainer-grid");
+        if (trainerGrid) {
+          trainerGrid.innerHTML = "";
+          const trainers = Array.isArray(data.trainers) ? data.trainers : [];
+          document.getElementById("trainer-stat").textContent = trainers.length + "+";
+
+          if (trainers.length === 0) {
+            trainerGrid.innerHTML = `<div class="loading">No trainers available yet.</div>`;
+          } else {
+            trainers.forEach(trainer => {
+              const card = document.createElement("div");
+              card.className = "trainer-card";
+              card.innerHTML = `
+                <img src="${trainer.image || 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=800'}" alt="${trainer.name}" class="trainer-image">
+                <div class="trainer-info">
+                  <h3>${trainer.name}</h3>
+                  <div class="trainer-role">${trainer.role}</div>
+                  <p class="trainer-bio">${trainer.bio || ''}</p>
+                </div>
+              `;
+              trainerGrid.appendChild(card);
+            });
+          }
+        }
+
+        const programGrid = document.getElementById("program-grid");
+        if (programGrid) {
+          programGrid.innerHTML = "";
+          const programs = Array.isArray(data.programs) ? data.programs : [];
+          if (programs.length === 0) {
+            programGrid.innerHTML = `<div class="loading">No programs available yet.</div>`;
+          } else {
+            programs.forEach(program => {
+              const card = document.createElement("div");
+              card.className = "program-card";
+              card.innerHTML = `
+                <h3>${program.title}</h3>
+                <p>${program.description}</p>
+              `;
+              programGrid.appendChild(card);
+            });
+          }
+        }
+
+        const pricingGrid = document.getElementById("pricing-grid");
+        if (pricingGrid) {
+          pricingGrid.innerHTML = "";
+          const plans = Array.isArray(data.pricing) ? data.pricing : [];
+          if (plans.length === 0) {
+            pricingGrid.innerHTML = `<div class="loading">No membership plans available yet.</div>`;
+          } else {
+            plans.forEach(plan => {
+              const card = document.createElement("div");
+              card.className = `price-card ${plan.featured ? 'featured' : ''}`;
+              let featuresHTML = '';
+              if (Array.isArray(plan.features)) {
+                featuresHTML = plan.features.map(f => `<li>${f}</li>`).join('');
+              }
+              card.innerHTML = `
+                <h3>${plan.title}</h3>
+                <div class="price">${plan.price}</div>
+                <ul class="features">${featuresHTML}</ul>
+              `;
+              pricingGrid.appendChild(card);
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Error loading website data:", error);
+      }
+    }
+
+    loadWebsiteData();
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
