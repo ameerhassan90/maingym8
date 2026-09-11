@@ -1,0 +1,27 @@
+{
+  "name": "forge-fitness-club",
+  "version": "1.0.0",
+  "description": "FORGE FITNESS CLUB website and admin management system",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "gym",
+    "fitness",
+    "forge-fitness",
+    "express",
+    "admin-panel"
+  ],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "express-session": "^1.18.2",
+    "helmet": "^8.1.0"
+  }
+}

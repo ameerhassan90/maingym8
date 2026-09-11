@@ -1,0 +1,124 @@
+{
+  "admin": {
+    "username": "Hassan",
+    "password": "hassan1122"
+  },
+  "site": {
+    "name": "HASSAN FITNESS CLUB",
+    "tagline": "Train Hard. Stay Strong.",
+    "description": "Professional trainers, modern equipment and personalized fitness guidance designed to help you become stronger every day.",
+    "email": "shafqatgarden000@gmale.com",
+    "phone": "+92 300 0000000",
+    "address": "multan, Pakistan"
+  },
+  "trainers": [
+    {
+      "id": "1",
+      "name": "Tariq Mahmood",
+      "role": "Head Strength Coach",
+      "image": "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=85&w=800",
+      "bio": "10+ years coaching powerlifting and weightlifting with a focus on strength, technique and progressive training."
+    },
+    {
+      "id": "2",
+      "name": "Zainab Khan",
+      "role": "HIIT & Conditioning Specialist",
+      "image": "https://images.unsplash.com/photo-1594381898411-846e7d193883?q=85&w=800",
+      "bio": "Former national track athlete specializing in high-intensity conditioning, stamina development and athletic performance."
+    }
+  ],
+  "programs": [
+    {
+      "id": "1",
+      "name": "Strength & Hypertrophy",
+      "description": "Periodized barbell programming focused on progressive overload, strength development and muscle growth."
+    },
+    {
+      "id": "2",
+      "name": "Combat Conditioning",
+      "description": "High-intensity boxing, conditioning and functional movement drills designed to improve fitness and athletic performance."
+    },
+    {
+      "id": "3",
+      "name": "Personal Training",
+      "description": "One-on-one coaching with a customized training approach based on individual goals and experience."
+    }
+  ],
+  "schedule": [
+    {
+      "id": "1",
+      "day": "Monday",
+      "time": "07:00 AM",
+      "className": "Strength & Conditioning",
+      "coach": "Tariq Mahmood"
+    },
+    {
+      "id": "2",
+      "day": "Wednesday",
+      "time": "06:00 PM",
+      "className": "Combat HIIT",
+      "coach": "Zainab Khan"
+    },
+    {
+      "id": "3",
+      "day": "Friday",
+      "time": "07:00 AM",
+      "className": "Powerlifting Foundations",
+      "coach": "Tariq Mahmood"
+    },
+    {
+      "id": "4",
+      "day": "Saturday",
+      "time": "05:00 PM",
+      "className": "Athletic Conditioning",
+      "coach": "Zainab Khan"
+    }
+  ],
+  "pricing": [
+    {
+      "id": "1",
+      "title": "Basic Access",
+      "price": "8,000 PKR / mo",
+      "features": [
+        "Full gym access",
+        "Locker room access",
+        "1 intro coaching session"
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Pro Athlete",
+      "price": "1,000 PKR / mo",
+      "features": [
+        "24/7 gym access",
+        "All group classes included",
+        "Customized workout plan",
+        "Monthly progress review"
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Elite Coaching",
+      "price": "25,000 PKR / mo",
+      "features": [
+        "24/7 gym access",
+        "Personal training",
+        "Customized workout and nutrition guidance",
+        "Weekly progress tracking"
+      ]
+    }
+  ],
+  "testimonials": [
+    {
+      "id": "1",
+      "author": "Hamza R.",
+      "text": "Best strength gym in Lahore. The equipment quality and community are unmatched."
+    },
+    {
+      "id": "2",
+      "author": "Ali M.",
+      "text": "The trainers are professional and the atmosphere keeps me motivated every session."
+    }
+  ],
+  "submissions": []
+}
